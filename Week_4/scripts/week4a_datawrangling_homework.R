@@ -43,7 +43,7 @@ penguins %>% # select data
   theme_classic() + #love me a good classic theme
   theme(panel.background = element_blank()) +  # but detest panel backgrounds, so get rid of that 
   ggsave(here("Week_4","outputs","datawranglingplot.png"), #tell R where to save this plot as a png
-         width = 7, height = 5) #and tell R how big I want that plot/what dimensions
+         width = 8, height = 5) #and tell R how big I want that plot/what dimensions
   
   
 
