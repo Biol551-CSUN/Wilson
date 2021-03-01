@@ -41,7 +41,7 @@ ggplot(summary,
   stat_density_2d(aes(fill = ..density..), geom = "raster", contour = FALSE) + # set 2d density plot
   scale_fill_viridis_c(option = "A", "Frequency", breaks = c(3, 6, 9, 12)) + # fill with viridis
   labs(title = "Frequency of Temperatures by Depth", # add title
-       x = "Average Depth (m)", # change x acis label
+       x = "Average Depth (m)", # change x axis label
        y = "Average Temp (°C)") + # change y axis label
   scale_x_continuous(expand = c(0,0)) + # get rid of weird empty margins
   scale_y_continuous(expand = c(0,0)) + # get rid of weird empty margins
