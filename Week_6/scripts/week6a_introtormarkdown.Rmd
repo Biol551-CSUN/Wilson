@@ -1,0 +1,44 @@
+---
+title: "Week 6a: Intro to R Markdown"
+author: "Emily Wilson"
+date: "Date: `r Sys.Date()`"
+output: 
+  html_document:
+    theme: "yeti"
+    toc: TRUE
+    toc_float: TRUE
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#
+
+# Intro
+Today we are going to work with the Palmer Penguins data to learn *RMarkdown*. 
+
+## Load libraries
+```{r, warning = FALSE, message = FALSE}
+library(tidyverse)
+library(palmerpenguins)
+library(here)
+library(rmarkdown)
+```
+
+# Inspect the data
+```{r}
+paged_table(penguins)
+```
+
+# Make a plot
+This plot represents penguin bill depth by bill length according to species for Adelie, Gentoo, and Chinstrap penguins.
+```{r, warning = FALSE, message = FALSE}
+penguins %>%
+  ggplot(aes(x = bill_length_mm, y = bill_depth_mm, color = species))+
+  geom_point()+
+  geom_smooth(method = lm)+
+  labs(x = " Bill Length (mm)",
+       y = "Bill Depth (mm)")+
+  theme_bw()
+```
