@@ -1,0 +1,60 @@
+---
+title: "R Markdown: Continued"
+author: "Emily Wilson"
+date: "3/3/2021"
+output: 
+ html_document:
+    toc: TRUE
+    toc_float: TRUE
+    theme: "journal"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, # 
+                      warning = FALSE, # don't show any warnings in final product
+                      message = FALSE, # don't show any messages in final product
+                      fig.path="../outputs/") # put all figures into outputs folder
+```
+
+# Introduction
+
+Today, we will use the **Palmer Penguins** data to manipulate figures in RMarkdown
+
+# Load libraries
+
+```{r}
+library(palmerpenguins)
+library(tidyverse)
+library(here)
+library(kableExtra)
+```
+
+# Make a plot  
+
+```{r penguinfigure, out.width = "70%", fig.align ="center", fig.cap = "Boxplot of penguin flipper lengths", echo = FALSE}
+penguinfigure <- penguins %>%
+  ggplot(aes(x = species, y = flipper_length_mm, color = island)) +
+  geom_boxplot()
+
+penguinfigure
+```
+
+# Make a table
+
+We are looking at bill length of  **Gentoo** penguins from **Biscoe**.
+
+```{r, echo = FALSE}
+penguins %>%
+  group_by(species, island) %>%
+  summarise(billmean = mean(bill_length_mm, na.rm = TRUE)) %>% # get summary stats
+  kbl() %>% # make it a kable
+  #kable_classic() %>% 
+  kable_paper() %>%
+  #kable_classic_2() %>% 
+  #kable_material_dark() %>% 
+  row_spec(5, bold = T, color = "white", background = "grey")
+```
+
+
+
+

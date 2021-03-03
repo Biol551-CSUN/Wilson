@@ -1,0 +1,74 @@
+---
+title: "Week 6b R Markdown Lab"
+author: "Emily Wilson"
+date: "3/3/2021"
+output:
+  prettydoc::html_pretty:
+    theme: cayman
+    toc: TRUE
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, # 
+                      warning = FALSE, # don't show any warnings in final product
+                      message = FALSE, # don't show any messages in final product
+                      fig.path ="../outputs/") # put all figures into outputs folder
+```
+
+# Introduction
+
+This is a document to **explore R Markdown** formatting and display options using the **Palmer Penguins** data set
+
+# Install packages
+* *Palmer Penguins*
+* *tidyverse*
+* *here*
+* *knitr*
+* *kableExtra*
+
+```{r libraries, echo = FALSE}
+library(palmerpenguins)
+library(tidyverse)
+library(here)
+library(knitr)
+library(kableExtra)
+```
+
+
+# Make a table to view Palmer Penguins data
+
+This table highlights penguin body measurements by **species**, **sex**, and **island**.
+
+```{r table, echo = FALSE}
+penguins %>% 
+  group_by(island, species, sex) %>%# choose grouping
+  drop_na() %>% # remove NAs
+  summarise(across(
+    .cols = bill_length_mm:body_mass_g, # give columns to calc summaries for
+    .fns = list(average = mean), # get means from the above cols
+    .names = "{fn}_{col}")) %>% # name new columns by function used
+  kbl(col.names = c("Island", "Species", "Sex", "Average Bill Length (mm)", "Average Bill Depth (mm)", "Average Flipper Length (mm)", "Average Body Mass (g)"),
+      align = "c") %>% 
+  kable_styling(bootstrap_options = c("responsive", "condensed"), font_size = 14)
+```
+
+
+# Make a graph for the Palmer Penguins data
+
+```{r penguinsizeplot, echo = FALSE, fig.cap = "Plot of **penguin bill length (mm)** by **flipper length (mm)**, with color representing **species** and size representing **body mass (g)**."}
+penguinsizeplot <- penguins %>% 
+  ggplot(., aes(x = bill_length_mm,
+           y = flipper_length_mm,
+           size = body_mass_g, # change point size by body mass
+           color = species)) + # change point color by species
+  geom_point(alpha = 0.5) + # make overlapping points more transparent
+  scale_color_viridis_d() + # set color palette
+  theme_classic() + # set theme
+  labs(x = "Bill Length (mm)", # change x label
+       y = "Flipper Length (mm)", # change y label
+       color = "Species", # capitalize legend title
+       size = "Body Mass (g)") # alter legend title
+
+penguinsizeplot
+```
+
+
