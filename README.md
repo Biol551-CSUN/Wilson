@@ -32,3 +32,10 @@ Folders are organized by week, with subfolders for data, scripts, and outputs.
 [Week 5](https://github.com/Biol551-CSUN/Wilson/tree/main/Week_5):
 * Joins
 * Dates/times with lubridate()
+
+[Week 6](https://github.com/Biol551-CSUN/Wilson/tree/main/Week_6):
+* R Markdown
+  * tables
+  * themes
+  * outputs
+
