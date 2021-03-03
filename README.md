@@ -35,6 +35,7 @@ Folders are organized by week, with subfolders for data, scripts, and outputs.
 
 [Week 6](https://github.com/Biol551-CSUN/Wilson/tree/main/Week_6):
 * R Markdown
+
   * formatting
   * tables
   * themes
