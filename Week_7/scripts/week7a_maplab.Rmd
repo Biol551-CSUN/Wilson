@@ -1,0 +1,97 @@
+---
+title: "Week 7a Map Lab"
+author: "Emily Wilson"
+date: "3/8/2021"
+output:
+  prettydoc::html_pretty:
+    theme: cayman
+    toc: TRUE
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, # 
+                      warning = FALSE, # don't show any warnings in final product
+                      message = FALSE, # don't show any messages in final product
+                      fig.path ="../outputs/") # put all figures into outputs folder
+```
+
+
+# Introduction
+
+This is a document for Computer Modeling Week 7a lab to explore making maps in R. The data set for this document can be found in the [Plastic Pollution](https://github.com/rfordatascience/tidytuesday/blob/master/data/2021/2021-01-26/readme.md) page from R for Data Science's Tidy Tuesday repository.
+
+***
+
+# Load libraries
+
+* *tidyverse*
+* *here*
+* *tidytuesdayr*
+* *maps*
+* *mapdata*
+* *mapproj*
+
+```{r libraries, include = FALSE}
+library(tidytuesdayR)
+library(tidyverse)
+library(here)
+library(maps)
+library(mapdata)
+library(mapproj)
+library(giphyr)
+```
+
+***
+
+# Read in & process data
+
+* This plastics data comes form **"Break Free of Plastic"**, courtesy of Sarah Sauve.  
+  * This data was used for Tidy Tuesday for the week of 2021-01-26.
+  
+* World map data was obtained using the *{maps}* package in R.
+
+* Plastics data was joined with world data to visualize the amount of plastic collected in each country.
+
+```{r data, include = FALSE}
+plastics <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-01-26/plastics.csv') # Tidy Tuesday plastics data
+world <- map_data("world") # data for the world
+```
+
+
+```{r manipulation, include = FALSE}
+# summarize data so all we have is total 2019 plastic pollution by country
+plastic_summ <- plastics %>% 
+  rename(region = country) %>% # change column name so it matches with the world data set
+  filter(year == "2019", parent_company == "Grand Total")# retain only data on grand totals of plastics per country for 2019 
+  
+plastic_summ$region[13] = "Ivory Coast" # rename all of the weirdness in the plastics data set
+plastic_summ$region[15] = "Ecuador"
+plastic_summ$region[33] = "Nigeria"
+plastic_summ$region[43] = "Taiwan"
+plastic_summ$region[50] = "UK"
+plastic_summ$region[51] = "USA"
+
+ plastic_summ <- plastic_summ %>% 
+  right_join(world) %>% # join with world data
+  select(region, grand_total, long, lat, group) # only keep columns needed for the map
+```
+
+***
+
+# Map plastic pollution by country
+
+```{r plasticsmap, echo = FALSE, fig.align = 'center', fig.cap=  "Plastic pollution by country in 2019. Countries in gray had no data available."}
+ggplot() +
+  geom_polygon(data = plastic_summ,
+               aes(x = long, # longtitude
+                   y = lat, # latitude
+                   group = group,  # keep it from being an abstract art piece
+                   fill = grand_total)) + # fill by plastic pollution
+  coord_map(projection = "mercator", xlim = c(-180,180)) + # set projection and x lims
+  scale_fill_viridis_c(trans = "log10") + # make the scale fill logarithmic for easier interpretation
+  theme_void() + # change theme
+  labs(fill = "log(plastics)") + # change to scale name to represent what it's actually showing
+  theme(panel.background = element_rect(fill = "lightcyan"), # make the ocean areas blue
+        panel.grid.major = element_blank()) # remove annoying grid lines
+
+```
