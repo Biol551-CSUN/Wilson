@@ -46,9 +46,8 @@ library(giphyr)
 # Read in & process data
 
 * This plastics data comes from **"Break Free of Plastic"**, courtesy of Sarah Sauve.
-  * This data was used for Tidy Tuesday for the week of 2021-01-26.  
   
-* World map data was obtained using the *{maps}* package in R.
+* The world map data was obtained using the *{maps}* package in R.
 
 * Plastics data was joined with world data to visualize the amount of plastic collected in each country.
 
@@ -80,7 +79,7 @@ plastic_summ$region[51] = "USA"
 
 # Plastic pollution map
 
-```{r plasticsmap, echo = FALSE, fig.align = 'center', fig.cap=  "Plastic pollution by country in 2019. Countries in gray had no data available."}
+```{r plasticsmap, echo = FALSE, fig.align = 'center', fig.cap=  "Plastic abundances by country in 2019. Countries in gray had no data available."}
 ggplot() +
   geom_polygon(data = plastic_summ,
                aes(x = long, # longtitude
