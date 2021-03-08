@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE, #
 
 # Introduction
 
-This is a document for Computer Modeling Week 7a lab to explore making maps in R. The data set for this document can be found in the [Plastic Pollution](https://github.com/rfordatascience/tidytuesday/blob/master/data/2021/2021-01-26/readme.md) page from R for Data Science's Tidy Tuesday repository.
+This is a document for Computer Modeling Week 7a lab to explore making maps in R. The data set for this document can be found at the [Plastic Pollution](https://github.com/rfordatascience/tidytuesday/blob/master/data/2021/2021-01-26/readme.md) page from R for Data Science's Tidy Tuesday repository.
 
 ***
 
@@ -45,8 +45,8 @@ library(giphyr)
 
 # Read in & process data
 
-* This plastics data comes form **"Break Free of Plastic"**, courtesy of Sarah Sauve.  
-  * This data was used for Tidy Tuesday for the week of 2021-01-26.
+* This plastics data comes from **"Break Free of Plastic"**, courtesy of Sarah Sauve.
+  * This data was used for Tidy Tuesday for the week of 2021-01-26.  
   
 * World map data was obtained using the *{maps}* package in R.
 
@@ -78,7 +78,7 @@ plastic_summ$region[51] = "USA"
 
 ***
 
-# Map plastic pollution by country
+# Plastic pollution map
 
 ```{r plasticsmap, echo = FALSE, fig.align = 'center', fig.cap=  "Plastic pollution by country in 2019. Countries in gray had no data available."}
 ggplot() +
@@ -90,7 +90,8 @@ ggplot() +
   coord_map(projection = "mercator", xlim = c(-180,180)) + # set projection and x lims
   scale_fill_viridis_c(trans = "log10") + # make the scale fill logarithmic for easier interpretation
   theme_void() + # change theme
-  labs(fill = "log(plastics)") + # change to scale name to represent what it's actually showing
+  labs(fill = "log(plastics)", # change to scale name to represent what it's actually showing
+       caption = "Source: Break Free of Plastic") + 
   theme(panel.background = element_rect(fill = "lightcyan"), # make the ocean areas blue
         panel.grid.major = element_blank()) # remove annoying grid lines
 
