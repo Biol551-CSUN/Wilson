@@ -41,3 +41,5 @@ Folders are organized by week, with subfolders for data, scripts, and outputs.
   * themes
   * outputs
 
+[Week 7](https://github.com/Biol551-CSUN/Wilson/tree/main/Week_7):
+* Maps
