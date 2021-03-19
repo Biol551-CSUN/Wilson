@@ -1,0 +1,195 @@
+---
+title: "Good Plot/Bad Plot Lab"
+author: "Emily Wilson"
+date: "3/9/2021"
+output:
+  rmdformats::readthedown
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      error = FALSE,
+                      fig.path ="../outputs/") # put all figures into outputs folder
+```
+
+---
+
+# Load libraries
+
+```{r, message = FALSE}
+library(tidytuesdayR)
+library(tidyverse)
+library(here)
+library(extrafont) # for changing fonts
+library(png) # for adding photo to plot
+library(grid) # for adding photo to plot
+library(ggimage) # for adding photo to plot
+library(ggridges) # for making a ridgeline plot
+library(PNWColors) # for colors
+```
+
+---
+
+# Read in data
+
+I chose data from **Tidy Tuesday** ([2020-07-07](https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-07-07/readme.md)), focusing on coffee quality ratings.
+
+```{r}
+coffee <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-07-07/coffee_ratings.csv')
+```
+
+---
+
+# Make a terrible plot
+
+To make this plot the worst visual imaginable, I took the following liberties:
+
+* I ensured that the way I was visualizing the data made no intuitive sense to the viewer by:
+  * Including way too many columns of the data set in one plot, such as:
+    * Designating x as the country of origin and y as the coffee rating, which were the only two columns I was actually interested in.
+    * Assigning point shape to coffee color.
+    * Assigning point color to the processing method of the coffee (because representing color with color would have made too much sense).
+    * Assigning the transparency to the harvest year, which isn't a meaningful choice at all.
+  * Making sure every one of these modifications came with a huge, intrusive, baffling legend.
+  * Not cleaning up any of the data I used, so that the years in particular are inconsistent enough that they mean absolutely nothing.
+  * Using geom_jitter() to reduce overlap even though it makes it very unclear which points correspond to which country (though I made them an aggressive size 9 so they were still able to be seen).
+  * Adding a geom_line() by country to see the full range of the data, even though it adds nothing to the viewer's understanding of the data, and making it dashed to break up the monotony of the black line.
+  * Flipping the y axis so it read the opposite of the way we would expect.
+  * Adding random breaks to the y axis that don't correspond to the data shown in any meaningful way, along with removing any important gridlines.
+
+# 
+
+* I made sure the labeling gave the viewer absolutely no meaningful input as to what the chart was meant to represent, by: 
+  * Ensuring that the title and subtitle of this graph indicate that this is, in fact, about coffee, but give no further direction as to what I wanted to show about coffee.
+  * Failing to use appropriate capitalization and punctuation for the title and subtitle.
+  * Removing the x axis; in combination with the abbreviated country names, it isn't clear to anyone but me what this axis was meant to represent.
+  * Leaving the y axis title as the messy, hard-to-interpret original column title from the data.
+  * Writing a caption that gives no credit to where I got the data from, and fails to convey anything meaningful.
+  
+#
+
+* Finally, I made sure the whole thing looked hideous by:
+  * Ensuring all of the colors used were just obscenely bad, and all of them clashed.
+  * Adding color to every element imaginable, when a lot should have stayed neutral.
+  * Using all of these color choices to make sure nothing important stood out, nor were many important elements readily visible.
+  * Making all of the lines extra thick, which just looks cluttered.
+  * Making the text really small, so it's nearly impossible to read.
+  * Changing the font to something hard to read (one element is in Comic Sans as well).
+  * Adding intrusive chart junk, in the form of giant coffee cup clip art on top of the plot.
+  
+
+```{r badplot, fig.width=17, fig.height=13}
+img <- readPNG(here("Week_7", "scripts", "images", "coffee.png")) # read in image I want to put on the plot
+
+ggplot(coffee,
+       aes(x = country_of_origin,
+           y = total_cup_points,
+           shape = color, # designate color by shape 
+           color = processing_method, # designate color by processing method
+           alpha = harvest_year)) + # change transparency by harvest year
+  annotation_custom(rasterGrob(img, # add image annotation
+                               width = unit(0.75 ,"npc"), # give sizing
+                               height = unit(0.75 ,"npc"), # give sizing
+                              hjust = 0.5, # give horizontal placement
+                              vjust = 0.25)) + # give vertical placement
+  geom_jitter(size = 9) + # use jitter to reduce overlap, set size to be aggressively large so you can see them
+  geom_line(color = "black", # add a line so you can see the range of the data for each country :)
+            size = 3, # make it big enough to see
+            linetype = "dashed") + # make it dashed, for some spice
+  theme(plot.background = element_rect(fill = "darkgoldenrod4"), # set plot background color for a nice coffee vibe
+        panel.background = element_rect(fill = "gold"), # fill panel background
+        panel.border = element_rect(colour = "black", fill = "NA", size = 4), # make black border for panel
+        panel.grid.major = element_blank(), # change color of major grid lines
+        panel.grid.minor = element_line(color = "cyan", # change color of minor grid lines
+                                        size = 4), # change line size
+        plot.title = element_text(size = 40, #change title size
+                                  color = "springgreen"), # change title color 
+        plot.margin = unit(c(0.5, 1, 3, 0.5), "cm"), # widen plot margin (top, right, bottom, left)
+        plot.subtitle = element_text(size = 20, # change subtitle size
+                                     color = "lightseagreen"), # change subtitle color
+        plot.caption = element_text(size = 15, # change caption size
+                                     color = "firebrick1", # change caption color
+                                    family = "Comic Sans MS"), # change just caption font
+        axis.title.x = element_blank(), # remove x axis title
+        axis.title.y = element_text(size = 20, # change y axis title size
+                                   color = "orangered"), # change y axis title color
+        axis.text.x = element_text(size = 15, # change x axis text size
+                                   angle = 90, # change x axis text orientation
+                                   color = "chartreuse"), # change x axis text color
+        axis.text.y = element_text(size = 20, # change y axis text size
+                                   angle = 90, # change y axis text orientation
+                                   color = "hotpink"), # change y axis text color
+        legend.key = element_rect(fill = "cadetblue1"), # change legend background color
+        legend.text = element_text(size = 10, # change legend text size
+                                   color = "brown4"), # change legend text color
+        legend.title = element_text(size = 15, # change legend title size
+                                   color = "yellow4"), # change legend title color
+        legend.background = element_rect(colour = "blue", # give legend a black outline
+                                         fill = "pink",
+                                          size = 4), # change thickness of legend outline
+        text = element_text(family = "Luminari")) + # change font) 
+  labs(title = "mmmmm, coffee!! !", # add title 
+         subtitle = "good coffee comes from everywhere...wow!!", # add subtitle
+       caption = "Another quality Em Plot®, brought to you by Emily, who really likes coffee") + # add caption
+  scale_x_discrete(labels = abbreviate, # abbreviate country names
+                   position = "top") + # put x axis on top
+  scale_y_reverse(breaks = c(1, 11, 22, 31, 47.9999998, 69, 81, 89.2)) # reverse y axis, change y axis breaks
+  
+
+```
+
+---
+
+# Make a better plot
+
+To make this plot better than the previous one, I:
+
+* Only included the two columns I was interested in seeing (in this case, the country and the coffee ratings).
+* Included an informative title and subtitle that directly connect to what the graph shows.
+* Changed the axis titles to accurately and informatively convey what they represent.
+* Made sure the viewer could actually read the countries represented by avoiding abbreviations and giving the axis text enough space to be legible.
+* Used consistent axis breaks so the cup scores are easier to determine.
+* Added a caption that actually gives credit to the source that I got the data from.
+* Avoided use of a bunch of clashing colors, and focused on contrast so everything was legible.
+* Used an easy-to-read, sans serif font.
+* Avoided unecessary chart junk.
+
+```{r goodplot, fig.height=8, fig.width=12, message=FALSE}
+coffee_dropped <- coffee %>% 
+  filter(total_cup_points > 0) %>%# get rid of that one weird zero-rated cup
+  filter(!country_of_origin %in% c("Zambia", "Burundi", "Japan", "Papua New Guinea" ,"Rwanda", "Mauritius","Cote d?Ivoire")) %>%  # get rid of countries that don't have enough data o make a meaningful ridge
+  drop_na(country_of_origin) # get rid of that one NA for country
+
+coffee_dropped$country_of_origin[coffee_dropped$country_of_origin == "Tanzania, United Republic Of"] <- "United Republic of Tanzania"
+
+
+pal <- pnw_palette("Moth")[c(1)]
+
+ggplot(coffee_dropped,
+       aes(x = total_cup_points, # use points for ridgeline on x axis
+           y = country_of_origin)) + # put country on y axis
+  geom_density_ridges(fill = pal) + # fill ridges with a color of my choosing
+  theme(panel.background = element_blank(), # get rid of panel background
+        panel.grid = element_blank(), # get rid of panel grid
+        plot.background = element_rect(fill = "ivory"), # give plot background a fill color
+        axis.ticks.y = element_blank(), # get rid of y axis ticks
+        axis.text = element_text(size = 10), # adjust axis text size
+        axis.title.x = element_text(size = 12), # adjust x axis title size
+        axis.title.y = element_text(size = 12), # adjust y axis title size
+        plot.title = element_text(size = 18, hjust = -0.27), # adjust title placement
+        plot.subtitle = element_text(size = 12, hjust = 1.33)) + # adjust subtitle placement
+  labs(title = "Coffee Ratings by Country", # add title
+       subtitle = "Total cup points (professionally rated 0-100) for coffee by country of origin. One cup with a score of zero from Honduras was omitted for ease of reading.", # add subtitle
+       caption = "Source: Coffee Quality Database | Tidy Tuesday", # add caption
+       x = "Coffee Rating", # change x axis title
+       y = "Country of Origin") + # change y axis title
+  scale_x_continuous(limits = c(62, 92), expand = c(0, 0)) # mess with limits and remove weird empty space around axis
+             
+```
+
+
+
+
+
+
