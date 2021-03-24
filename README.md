@@ -43,3 +43,12 @@ Folders are organized by week, with subfolders for data, scripts, and outputs.
 
 [Week 7](https://github.com/Biol551-CSUN/Wilson/tree/main/Week_7):
 * Maps
+
+
+[Week 8](https://github.com/Biol551-CSUN/Wilson/tree/main/Week_8):
+* Advanced plotting
+  * gganimate
+  * ggrepel
+  * magick
+
+* Functional programming
