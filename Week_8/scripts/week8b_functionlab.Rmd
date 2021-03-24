@@ -1,0 +1,103 @@
+---
+title: "Week 8b: Functional Programming Lab"
+author: "Emily Wilson"
+date: "3/24/2021"
+output:
+  rmdformats::material
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+# Load libraries
+
+* **tidyverse**
+* **PNWColors** for color palettes
+* **palmerpenguins**  for data
+* **kableExtra** for pretty tables
+
+```{r}
+library(tidyverse)
+library(PNWColors)
+library(palmerpenguins)
+library(kableExtra)
+```
+
+# Write a Function
+
+### Write a function to create a ratio of different penguin body measurements
+
+```{r}
+measurement_ratio <- function(x, y) { # name the function and give it an input
+  ratio <- (x / y) # put in the equation I want it to use
+  return(ratio) # tell it what values I want returned
+}
+```
+
+### Test the function
+
+We tested this function by pairing it with mutate() to create additional columns that gave us the ratio of bill length (mm) to bill depth (mm), a ratio of body mass (g) to bill depth (mm), and a ratio of body mass (g) to bill length (mm)
+
+```{r}
+penguins %>% # choose data
+  drop_na() %>% # remove NA values
+  mutate(length_depth_ratio = measurement_ratio(bill_length_mm, bill_depth_mm), # test the function with a ratio of bill length to bill depth
+         mass_depth_ratio = measurement_ratio(body_mass_g, bill_depth_mm), # test the function with a ratio of body mass to bill depth
+         mass_length_ratio = measurement_ratio(body_mass_g, bill_length_mm)) %>% # test the function with a ratio of body mass to bill length
+  select(species, island, length_depth_ratio, mass_depth_ratio, mass_length_ratio) %>% # show only species, island, and our converted columns
+  kbl(col.names = c("Species", "Island", "Length:Depth", "Mass:Depth", "Mass:Length"), align = "c") %>% # tidy column titles
+  kable_styling(bootstrap_options = c("responsive", "condensed"), font_size = 12) %>% 
+  scroll_box(width = "500px", height = "200px")
+```
+
+# Write a Graph Function
+
+### Write a function that creates a graph...
+
+```{r}
+penguinplot <- function(data = penguins, x, y, z, cat = TRUE){ # name the function, tell it to use penguin data and give it inputs
+  pal <- pnw_palette("Starfish", 3, type = "discrete")# give a color palette to use
+  
+  if(cat == TRUE) {ggplot(data, aes(x = {{x}}, y = {{y}} , color = {{z}})) + # if cat == TRUE, I want a boxplot
+    geom_boxplot() +
+    scale_color_manual("Species", values=pal) + 
+    theme_classic()
+  } 
+  
+else{ # if cat == FALSE, I want a scatterplot
+  ggplot(data, aes(x = {{x}}, y = {{y}} , color = {{z}})) +
+    geom_point() +
+    geom_smooth(method = "lm") +
+    scale_color_manual("Species", values=pal) + 
+    theme_classic()
+}
+}
+```
+
+
+### Test the function
+
+### Get a boxplot
+```{r}
+penguinplot(x = island, y = body_mass_g, z = species) # get a boxplot (cat == TRUE by default)
+```
+
+
+### Get a scatterplot
+```{r}
+penguinplot(x = body_mass_g, y = bill_length_mm, z = species, cat = FALSE) # get a scatterplot (cat == FALSE)
+```
+
+
+
+
+
+
+
+
+
+
+
