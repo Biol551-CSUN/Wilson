@@ -1,4 +1,5 @@
 # Week 10b Lab: Shiny App
+# Added data to this folder as well because my app worked locally but not on server.
 
 library(shiny)
 library(here)
@@ -6,8 +7,9 @@ library(ggrepel)
 library(tidyverse)
 library(lubridate)
 library(shinythemes)
+library(rsconnect)
 
-baby <- read.csv(here("week_10", "data", "HatchBabyExport.csv")) # read data
+baby <- read.csv("HatchBabyExport.csv") # read data
 
 # Define UI
 ui <- fluidPage(
@@ -65,6 +67,7 @@ server <- function(input, output) {
                  x = "Date", # capitalize x axis title
                  y = "Weight (lbs)") + # modify y axis title
             scale_x_date(date_breaks = "5 days", date_labels = "%m/%d") + # fix the x scale and display
+            scale_y_continuous(limits = c(5, 8), breaks = c(5, 6, 7, 8)) + # put both graphs on the same scale for consistency
             theme(plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm"), # give the plots a bit more space
                   plot.title = element_text(size = 16, face = "bold"), # make title larger
                   axis.title.x = element_text(size = 14), # make x axis title larger
@@ -94,6 +97,7 @@ server <- function(input, output) {
             )) +
             geom_boxplot(color = "royalblue4", fill = "azure2") + # set graph type as a boxplot
             scale_x_date(date_breaks = "5 days", date_labels = "%m/%d") + # fix the x scale and display
+            scale_y_continuous(limits = c(0, 5), breaks = c(1, 2, 3, 4, 5)) + # put both graphs on the same scale for consistency
             theme_classic() + # set theme
             labs(title = "Feeding", # title graph
                  x = "Date", # capitalize x axis title
