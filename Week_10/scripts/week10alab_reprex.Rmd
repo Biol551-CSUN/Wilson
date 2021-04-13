@@ -1,0 +1,31 @@
+---
+title: "Week 10a Lab- Create a Reprex"
+author: "Emily Wilson"
+date: "4/6/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Create the reprex
+
+```{r}
+# Load library
+library(tidyverse)
+
+# Select columns of interest and filter to species of interest
+iris %>% 
+  select(Sepal.Length, Sepal.width, Species) %>% 
+  filter(Species == "setosa", "versicolor")
+   
+```
+
+# Render the Reprex
+
+* Highlight the selection you want to render as a reprex
+* Go to the Add-Ins tab and select "render reprex"
+* Select "current selection" as the location
+* In this case, select target venue as a Slack message to get the correct formatting
+# Append session info so the people who will help you have all the information they could ever need
