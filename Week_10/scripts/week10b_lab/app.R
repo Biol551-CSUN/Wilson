@@ -2,11 +2,10 @@
 
 library(shiny)
 library(here)
+library(ggrepel)
 library(tidyverse)
 library(lubridate)
 library(shinythemes)
-library(ggthemr)
-ggthemr("lilac")
 
 baby <- read.csv(here("week_10", "data", "HatchBabyExport.csv")) # read data
 
@@ -59,11 +58,19 @@ server <- function(input, output) {
             mutate(Amount = (as.numeric(Amount))) %>% # make the weight numeric (it was a character before)
             mutate_if(is.numeric, round, digits = 2) %>% # round the weight to a reasonable number of decimal places
             ggplot(aes(x = day, y = Amount)) + # plot the weight of the baby by the day
-            geom_point() + # get scatterplot
+            geom_point(size = 3, color = "slateblue") + # get scatterplot
+            geom_label_repel(aes(label = Amount), point.padding = 0, box.padding = 0.3) + # add weight labels
             theme_classic() + # add theme
             labs(title = "Weight", # title graph
                  x = "Date", # capitalize x axis title
-                 y = "Weight (lbs)") # modify y axis title
+                 y = "Weight (lbs)") + # modify y axis title
+            scale_x_date(date_breaks = "5 days", date_labels = "%m/%d") + # fix the x scale and display
+            theme(plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm"), # give the plots a bit more space
+                  plot.title = element_text(size = 16, face = "bold"), # make title larger
+                  axis.title.x = element_text(size = 14), # make x axis title larger
+                  axis.title.y = element_text(size = 14), # make y axis title larger
+                  axis.text.x = element_text(size = 11), # make axis text larger
+                  axis.text.y = element_text(size = 11)) # make axis text larger
     })
     
     output$consumpplot <- renderPlot({ # define what the output will be for the food consumption plot we called in the UI section
@@ -85,11 +92,18 @@ server <- function(input, output) {
                 y = Amount,
                 group = day
             )) +
-            geom_boxplot() + # set graph type as a boxplot
+            geom_boxplot(color = "royalblue4", fill = "azure2") + # set graph type as a boxplot
+            scale_x_date(date_breaks = "5 days", date_labels = "%m/%d") + # fix the x scale and display
             theme_classic() + # set theme
             labs(title = "Feeding", # title graph
                  x = "Date", # capitalize x axis title
-                 y = "Amount Consumed (oz)") # modify y axis title
+                 y = "Amount Consumed (oz)") + # modify y axis title
+            theme(plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm"), # give the plots a bit more space
+                  plot.title = element_text(size = 16, face = "bold"), # make title larger
+                  axis.title.x = element_text(size = 14), # make x axis title larger
+                  axis.title.y = element_text(size = 14), # make y axis title larger
+                  axis.text.x = element_text(size = 11), # make axis text larger
+                  axis.text.y = element_text(size = 11)) # make axis text larger
     })
     
     output$diaperplot <- renderPlot({ # define what the output will be for the diaper status plot we called in the UI section
@@ -105,14 +119,22 @@ server <- function(input, output) {
                 x = day,
                 y = Amount
             )) + 
-            geom_violin() + # make a viiolin plot
+            geom_violin(fill = "darkolivegreen", alpha = 0.3) + # make a viiolin plot
             geom_jitter(aes(x = day, y = Amount), # overlay jittered points so they can visualize the sheer number of diapers they've dealt with
-                        alpha = 0.5, # make points slightly transparent for clarity
+                        alpha = 0.75, # make points slightly transparent for clarity
+                        color = "darkolivegreen4",
                         position = position_jitter(height = 0.1)) + # mess with jitter position
+            scale_x_date(date_breaks = "5 days", date_labels = "%m/%d") + # fix the x scale and display
             theme_classic() + # set theme
             labs(title = "Diapers", # title graph
                  x = "Date", # capitalize x axis title
-                 y = "Type of Dirty Diaper") # modify y axis title
+                 y = "Type of Dirty Diaper") + # modify y axis title
+            theme(plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm"), # give the plots a bit more space
+                  plot.title = element_text(size = 16, face = "bold"), # make title larger
+                  axis.title.x = element_text(size = 14), # make x axis title larger
+                  axis.title.y = element_text(size = 14), # make y axis title larger
+                  axis.text.x = element_text(size = 11), # make axis text larger
+                  axis.text.y = element_text(size = 11)) # make axis text larger
     })
 }
 
