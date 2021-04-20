@@ -1,6 +1,6 @@
 ### This is a script for Spring 2021 Computer Modeling covering getting help for R
 ### Created by: Emily Wilson
-### Created on: 04/05/21
+### Created on: 04/19/21
 ############################################################################################
 
 # Load libraries ###########################################################################
