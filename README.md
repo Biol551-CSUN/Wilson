@@ -56,3 +56,10 @@ Folders are organized by week, with subfolders for data, scripts, and outputs.
 [Week 10](https://github.com/Biol551-CSUN/Wilson/tree/main/Week_10):
 * Reprex
 * Shiny apps
+
+[Week 11](https://github.com/Biol551-CSUN/Wilson/tree/main/Week_11/scripts):
+* Package presentation notes
+
+[Week 12](https://github.com/Biol551-CSUN/Wilson/tree/main/Week_12):
+* Working with words
+* Factors
