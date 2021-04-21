@@ -1,4 +1,4 @@
-### This is a script for Spring 2021 Computer Modeling covering getting help for R
+### This is a script for Spring 2021 Computer Modeling covering woring with words in R
 ### Created by: Emily Wilson
 ### Created on: 04/19/21
 ############################################################################################
