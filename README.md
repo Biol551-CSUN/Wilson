@@ -63,3 +63,10 @@ Folders are organized by week, with subfolders for data, scripts, and outputs.
 [Week 12](https://github.com/Biol551-CSUN/Wilson/tree/main/Week_12):
 * Working with words
 * Factors
+
+[Week 13](https://github.com/Biol551-CSUN/Wilson/tree/main/Week_13):
+* Iterative coding
+  * for loops
+  * {purrr}
+
+* Models
